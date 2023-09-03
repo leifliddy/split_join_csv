@@ -63,10 +63,9 @@ dest_hash=$(cat $dest_hashfile | awk '{print $1}')
 [[ $debug = true ]] && echo -e "\nsource hash: $source_hash\ndest hash:   $dest_hash"
 
 if [[ $source_hash == $dest_hash ]]; then
-    match=true
-    echo "success:     source and dest hashes match"
+    echo "success: source and dest hashes match"
 else
-    echo "error:       source and dest hashes don't match....exiting"
+    echo "error: source and dest hashes don't match....exiting"
     echo -e "\nwrote to $output_file"
     exit 1
 fi
