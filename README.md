@@ -28,5 +28,5 @@ Join files matching PREFIX*.csv into a single csv file
 [leif.liddy@black ~]$ ./join_csv.sh file.csv 
 success: source and dest hashes match
 
-wrote to bar_20230906_27.csv
+wrote to bar_combined.csv
 ```
