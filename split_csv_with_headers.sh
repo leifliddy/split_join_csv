@@ -4,7 +4,7 @@
 usage() {
 cat << EOF
 Usage: split_csv [OPTION]... [CSV_FILE]...
-Split CSV_FILE into smaller files while maintaining header
+Split CSV_FILE into smaller files while maintaining headers
 
   -d        show debug output
   -h        display this help and exit
