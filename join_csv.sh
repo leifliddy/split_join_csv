@@ -8,7 +8,7 @@ Join files matching PREFIX*.csv into a single csv file
 
   -d        show debug output
   -h        display this help and exit
-  -p        specify file prefix to use (default prefix is bar)
+  -p        specify prefix to use with split (default prefix is bar)
 EOF
 
 exit 0
