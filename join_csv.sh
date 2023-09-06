@@ -32,8 +32,8 @@ shift $((OPTIND-1))
 unset header
 date=$(date +%Y%m%d_%S)
 output_file=${join_file_prefix}_$date.csv
-source_hashfile=${join_file_prefix}.md5
-dest_hashfile=${join_file_prefix}_$date.md5
+source_hashfile=${join_file_prefix}.csv.sha1
+dest_hashfile=${join_file_prefix}_$date.sha1
 
 [[ $debug = true ]] && echo "output_file is $output_file"
 [[ $debug = true ]] && echo "join_file_prefix: $join_file_prefix"
@@ -49,16 +49,16 @@ for csv_file in $join_filenames; do
     tail -n +2 $csv_file >> $output_file
 done
 
-[[ $debug = true ]] && echo "md5sum $output_file > $dest_hashfile"
-md5sum $output_file > $dest_hashfile
+[[ $debug = true ]] && echo -e "\nopenssl dgst -sha1 $output_file > $dest_hashfile"
+openssl dgst -sha1 $output_file > $dest_hashfile
 
 # compare hash files
 
 [[ ! -f $source_hashfile ]] && echo "$source_hashfile doesn't exist...exiting" && exit
 
 # compare hashes'
-source_hash=$(cat $source_hashfile | awk '{print $1}')
-dest_hash=$(cat $dest_hashfile | awk '{print $1}')
+source_hash=$(awk '{print $NF}' $source_hashfile)
+dest_hash=$(awk '{print $NF}' $dest_hashfile)
 
 [[ $debug = true ]] && echo -e "\nsource hash: $source_hash\ndest hash:   $dest_hash"
 
@@ -72,7 +72,7 @@ fi
 
 [[ $debug = true ]] && echo "removing $join_file_prefix split files"
 for split_file in $join_filenames; do
-    [[ $debug = true ]] && echo "rm -f $split_file"
+    #[[ $debug = true ]] && echo "rm -f $split_file"
     rm -f $split_file
 done
 
