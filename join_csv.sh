@@ -8,7 +8,7 @@ Join files matching PREFIX*.csv into a single csv file
 
   -d        show debug output
   -h        display this help and exit
-  -p        specify prefix to use with split (default prefix is bar)
+  -p        specify file prefix to use (default prefix is bar)
 EOF
 
 exit 0
@@ -30,10 +30,9 @@ shift $((OPTIND-1))
 # specify default values (used if variables are not set)
 : ${join_file_prefix:='bar'}
 unset header
-date=$(date +%Y%m%d_%S)
-output_file=${join_file_prefix}_$date.csv
+output_file=${join_file_prefix}_combined.csv
 source_hashfile=${join_file_prefix}.csv.sha1
-dest_hashfile=${join_file_prefix}_$date.sha1
+dest_hashfile=${join_file_prefix}_combined.sha1
 
 [[ $debug = true ]] && echo "output_file is $output_file"
 [[ $debug = true ]] && echo "join_file_prefix: $join_file_prefix"
@@ -70,10 +69,13 @@ else
     exit 1
 fi
 
-[[ $debug = true ]] && echo "removing $join_file_prefix split files"
+[[ $debug = true ]] && echo -e "\nremoving $join_file_prefix split files"
 for split_file in $join_filenames; do
     #[[ $debug = true ]] && echo "rm -f $split_file"
     rm -f $split_file
 done
+
+[[ $debug = true ]] && echo "removing hash files: $source_hashfile $dest_hashfile"
+rm -f $source_hashfile $dest_hashfile
 
 echo -e "\nwrote to $output_file"
